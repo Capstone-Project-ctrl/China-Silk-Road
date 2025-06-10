@@ -9,79 +9,8 @@
     <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
     <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
     <style>
-        .timeline-container {
-            width: 100%;
-            height: 600px;
-            margin: 50px 0;
-        }
-        .heritage-site {
-            margin-bottom: 50px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: all 0.5s ease;
-            opacity: 0.7;
-            transform: scale(0.95);
-            position: relative;
-        }
-        .heritage-site.active {
-            opacity: 1;
-            transform: scale(1);
-            box-shadow: 0 0 20px rgba(139, 69, 19, 0.6);
-            z-index: 1;
-        }
-        .heritage-site:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .card {
-            border: 1px solid #ddd;
-            transition: all 0.5s ease;
-            background: #fff;
-        }
-        .heritage-site.active .card {
-            border-color: #8B4513;
-            background: #fff9f5;
-        }
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-            transition: all 0.5s ease;
-        }
-        .heritage-site.active .card-img-top {
-            transform: scale(1.05);
-        }
-        .card-title {
-            transition: all 0.3s ease;
-        }
-        .heritage-site.active .card-title {
-            color: #8B4513;
-            transform: scale(1.05);
-        }
-        .card-text {
-            transition: all 0.3s ease;
-        }
-        .heritage-site.active .card-text {
-            color: #333;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        .heritage-site.highlight {
-            animation: pulse 1s ease-in-out;
-        }
-        .timeline-event {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .timeline-event:hover {
-            background-color: rgba(139, 69, 19, 0.1);
-        }
-        .timeline-event.active {
-            background-color: rgba(139, 69, 19, 0.2);
-        }
+        body { background: #f8f9fa; }
+        #timeline-embed { margin: 40px auto; }
     </style>
 </head>
 <body>
@@ -117,44 +46,11 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-      <div class="row">
-        <!-- 时间线 -->
-        <div class="col-md-5">
-          <ul class="list-group" id="timeline-list">
-            <li class="list-group-item active" data-idx="0">
-              <b>138 BC</b> Zhang Qian's Mission
-            </li>
-            <li class="list-group-item" data-idx="1">
-              <b>97 AD</b> Ban Chao's Campaigns
-            </li>
-            <li class="list-group-item" data-idx="2">
-              <b>629-645 AD</b> Xuanzang's Journey
-            </li>
-            <li class="list-group-item" data-idx="3">
-              <b>1372 AD</b> Construction of Jiayuguan Pass
-            </li>
-            <li class="list-group-item" data-idx="4">
-              <b>1645 AD</b> Construction of Potala Palace
-            </li>
-          </ul>
-        </div>
-        <!-- 景点卡片 -->
-        <div class="col-md-7">
-          <div id="heritage-cards"></div>
-        </div>
-      </div>
+    <div class="container">
+        <div id="timeline-embed" style="width: 100%; height: 600px;"></div>
     </div>
 
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Key Heritage Sites</h2>
-        <div class="row">
-            <!-- Key Heritage Sites 区域已移除，内容已合并到timeline_json事件中 -->
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer mt-5">
         <div class="container">
             <p>Silk Road Digital Project</p>
         </div>
@@ -162,67 +58,76 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    const heritageData = [
-      {
-        img: "img/wild-goose.jpg",
-        name: "Giant Wild Goose Pagoda",
-        event: "Zhang Qian's Mission",
-        date: "138 BC",
-        desc: "Symbolizes the Silk Road's eastern start, built after Zhang Qian's mission."
+    var timeline_json = {
+      "title": {
+        "text": {
+          "headline": "丝绸之路遗址大事记",
+          "text": "五个重要遗址与历史节点"
+        }
       },
-      {
-        img: "img/jiaohe.jpg",
-        name: "Jiaohe Ruins",
-        event: "Ban Chao's Campaigns",
-        date: "97 AD",
-        desc: "A key military and trading outpost, secured by Ban Chao's campaigns."
-      },
-      {
-        img: "img/mogao-mural.jpg",
-        name: "Mogao Caves",
-        event: "Xuanzang's Journey",
-        date: "629-645 AD",
-        desc: "Flourished as a Buddhist art center after Xuanzang's journey."
-      },
-      {
-        img: "img/jiayuguan-pass.jpg",
-        name: "Jiayuguan Pass",
-        event: "Construction of Jiayuguan Pass",
-        date: "1372 AD",
-        desc: "The western terminus of the Ming Great Wall, built in 1372."
-      },
-      {
-        img: "img/potala-palace.jpg",
-        name: "Potala Palace",
-        event: "Construction of Potala Palace",
-        date: "1645 AD",
-        desc: "A landmark of the southern Silk Road, built in 1645."
-      }
-    ];
+      "events": [
+        {
+          "media": {
+            "url": "img/zhangqian-mission.jpg",
+            "caption": "张骞通西域 Zhang Qian's Mission"
+          },
+          "start_date": { "year": "138", "era": "BCE" },
+          "text": {
+            "headline": "张骞通西域 Zhang Qian's Mission (138 BC)",
+            "text": "<b>人物/事件：</b>张骞奉汉武帝之命出使西域，开辟了丝绸之路。<br><b>代表遗址：</b>大雁塔 (wild-goose.jpg)<br><b>简介：</b>象征丝绸之路东端起点，张骞出使后长安成为东西交流枢纽。<br><b>丝绸之路意义：</b>张骞的出使正式开启了中西交流的通道，促进了丝绸之路的形成。"
+          }
+        },
+        {
+          "media": {
+            "url": "img/ban-chao-campaigns.jpg",
+            "caption": "班超出使西域 Ban Chao's Campaigns"
+          },
+          "start_date": { "year": "97", "era": "CE" },
+          "text": {
+            "headline": "班超出使西域 Ban Chao's Campaigns (97 AD)",
+            "text": "<b>人物/事件：</b>班超平定西域，保障丝绸之路畅通。<br><b>代表遗址：</b>交河故城 (jiaohe.jpg)<br><b>简介：</b>重要军事和商贸据点，班超巩固西域后成为丝路重镇。<br><b>丝绸之路意义：</b>加强了西域与中原的联系，促进了贸易和文化交流。"
+          }
+        },
+        {
+          "media": {
+            "url": "img/xuanzang.jpg",
+            "caption": "玄奘取经 Xuanzang's Journey"
+          },
+          "start_date": { "year": "629", "era": "CE" },
+          "end_date": { "year": "645", "era": "CE" },
+          "text": {
+            "headline": "玄奘取经 Xuanzang's Journey (629-645 AD)",
+            "text": "<b>人物/事件：</b>玄奘西行取经，带回佛经，推动佛教在中国的发展。<br><b>代表遗址：</b>莫高窟 (mogao-mural.jpg)<br><b>简介：</b>玄奘取经后，莫高窟成为佛教艺术中心。<br><b>丝绸之路意义：</b>促进了佛教文化的传播和艺术的繁荣。"
+          }
+        },
+        {
+          "media": {
+            "url": "img/jiayuguan-construction.jpg",
+            "caption": "嘉峪关建成 Jiayuguan Pass"
+          },
+          "start_date": { "year": "1372", "era": "CE" },
+          "text": {
+            "headline": "嘉峪关建成 Jiayuguan Pass (1372 AD)",
+            "text": "<b>事件：</b>明长城西端起点，守护丝绸之路西出要道。<br><b>代表遗址：</b>嘉峪关 (jiayuguan-pass.jpg)<br><b>简介：</b>明代修建，丝绸之路西段门户。<br><b>丝绸之路意义：</b>保障了丝绸之路西段的安全和畅通。"
+          }
+        },
+        {
+          "media": {
+            "url": "img/potala-palace.jpg",
+            "caption": "布达拉宫建成 Potala Palace"
+          },
+          "start_date": { "year": "1645", "era": "CE" },
+          "text": {
+            "headline": "布达拉宫建成 Potala Palace (1645 AD)",
+            "text": "<b>事件：</b>布达拉宫成为南线丝绸之路的重要地标。<br><b>代表遗址：</b>布达拉宫 (potala-palace.jpg)<br><b>简介：</b>藏传佛教圣地，丝路多元文化象征。<br><b>丝绸之路意义：</b>丰富了丝绸之路的多元文化内涵。"
+          }
+        }
+      ]
+    };
 
-    function renderHeritageCards(activeIdx = 0) {
-      document.getElementById('heritage-cards').innerHTML = heritageData.map((h, idx) => `
-        <div class="card mb-4 ${idx === activeIdx ? 'border-primary shadow' : ''}">
-          <img src="${h.img}" class="card-img-top" alt="${h.name}" style="object-fit:cover;max-height:260px;">
-          <div class="card-body">
-            <h4 class="card-title">${h.name}</h4>
-            <h6 class="text-muted">${h.event} <span class="small">(${h.date})</span></h6>
-            <p class="card-text">${h.desc}</p>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      renderHeritageCards(0);
-      document.querySelectorAll('#timeline-list .list-group-item').forEach((item, idx) => {
-        item.addEventListener('click', function() {
-          document.querySelectorAll('#timeline-list .list-group-item').forEach(li => li.classList.remove('active'));
-          this.classList.add('active');
-          renderHeritageCards(idx);
-        });
-      });
-    });
+    window.onload = function() {
+      window.timeline = new TL.Timeline('timeline-embed', timeline_json, { language: 'zh-cn' });
+    };
     </script>
 </body>
 </html> 
