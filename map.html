@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7015chinasilkroad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .route-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .route-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .legend {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/silk-road-logo.jpg" alt="Silk Road Logo">
+                Silk Road Digital Project
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="map.html">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="heritage.html">Heritage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="timeline.html">Timeline</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="insight.html">Insight</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Interactive Silk Road Map</h1>
+        <p class="text-center mb-4">Explore the ancient trade routes and five key heritage sites along the Silk Road</p>
+        
+        <div id="map"></div>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="route-info" id="routeInfo">
+                    <h3>Route Information</h3>
+                    <p>Click on any route or marker to view detailed information.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="legend">
+                    <h4>Legend</h4>
+                    <div><i style="background: #e31a1c"></i> Heritage Sites</div>
+                    <div><i style="background: #8B4513; border: 2px dashed #000"></i> North Route</div>
+                    <div><i style="background: #8B4513; border: 2px dashed #000"></i> Middle Route</div>
+                    <div><i style="background: #8B4513; border: 2px dashed #000"></i> South Route</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Silk Road Digital Project</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([35.0, 105.0], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Route styles
+        const routeStyle = {
+            color: '#8B4513',
+            weight: 3,
+            opacity: 0.7,
+            dashArray: '10, 10'
+        };
+
+        // Heritage site markers
+        const heritageSites = [
+            {
+                name: "Mogao Caves",
+                location: [40.0419, 94.8091],
+                description: "A UNESCO World Heritage site featuring Buddhist art spanning 1,000 years.",
+                image: "image/map/mogao.jpg"
+            },
+            {
+                name: "Jiaohe Ancient City",
+                location: [42.9514, 89.0622],
+                description: "An ancient city built on a plateau, showcasing unique architectural style.",
+                image: "image/map/jiaohe.jpg"
+            },
+            {
+                name: "Potala Palace",
+                location: [29.6578, 91.1169],
+                description: "The iconic palace in Lhasa, symbolizing Tibetan culture and history.",
+                image: "image/map/potala.jpg"
+            },
+            {
+                name: "Jiayuguan Pass",
+                location: [39.7731, 98.2892],
+                description: "The western terminus of the Ming Great Wall, a vital fortress and gateway on the Silk Road.",
+                image: "image/map/jiayuguan.jpg"
+            },
+            {
+                name: "Wild Goose Pagoda",
+                location: [34.2225, 108.9642],
+                description: "A Buddhist pagoda in Xi'an, built in 652 AD.",
+                image: "image/map/wild-goose.jpg"
+            }
+        ];
+
+        // Add heritage site markers
+        heritageSites.forEach(site => {
+            const marker = L.marker(site.location).addTo(map);
+            marker.bindPopup(`
+                <h4>${site.name}</h4>
+                <p>${site.description}</p>
+                <img src="${site.image}" alt="${site.name}" style="width: 100%; margin-top: 10px;">
+            `);
+        });
+
+        // Route coordinates
+        const routes = {
+            north: [
+                [34.2225, 108.9642], // Xi'an
+                [36.0617, 103.8318], // Lanzhou
+                [40.0419, 94.8091],  // Dunhuang
+                [42.9514, 89.0622],  // Jiaohe
+                [43.8256, 87.6168],  // Urumqi
+                [43.9167, 81.3167]   // Yining
+            ],
+            middle: [
+                [34.2225, 108.9642], // Xi'an
+                [36.0617, 103.8318], // Lanzhou
+                [37.9282, 102.6398], // Wuwei
+                [38.4872, 106.2309], // Yinchuan
+                [40.0419, 94.8091],  // Dunhuang
+                [42.9514, 89.0622]   // Jiaohe
+            ],
+            south: [
+                [34.2225, 108.9642], // Xi'an
+                [33.3683, 105.3619], // Longnan
+                [32.4353, 105.8399], // Guangyuan
+                [30.5728, 104.0668], // Chengdu
+                [29.6578, 91.1169],  // Lhasa
+                [28.6139, 77.2090]   // New Delhi
+            ]
+        };
+
+        // Add routes with click events
+        const routeLayers = {};
+        Object.keys(routes).forEach(routeName => {
+            const route = routes[routeName];
+            const polyline = L.polyline(route, routeStyle).addTo(map);
+            
+            // Add markers for each point in the route
+            route.forEach((point, index) => {
+                const marker = L.circleMarker(point, {
+                    radius: 5,
+                    fillColor: '#8B4513',
+                    color: '#fff',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                // Add click event to show route information
+                marker.on('click', () => {
+                    const routeInfo = document.getElementById('routeInfo');
+                    const routeTitle = routeName.charAt(0).toUpperCase() + routeName.slice(1) + ' Route';
+                    const routeDescription = getRouteDescription(routeName);
+                    const routeImage = getRouteImage(routeName);
+                    
+                    routeInfo.innerHTML = `
+                        <h3>${routeTitle}</h3>
+                        <p>${routeDescription}</p>
+                        <img src="${routeImage}" alt="${routeTitle}" class="route-image">
+                    `;
+                });
+            });
+
+            routeLayers[routeName] = polyline;
+        });
+
+        // Route descriptions
+        function getRouteDescription(routeName) {
+            const descriptions = {
+                north: "The Northern Route of the Silk Road traversed through the Gobi Desert and the Tian Shan Mountains, connecting China with Central Asia. This route was known for its challenging terrain and was primarily used for trade in silk, spices, and other luxury goods.",
+                middle: "The Middle Route followed the Hexi Corridor, passing through important trading cities and oases. This route was crucial for cultural exchange and was known for its Buddhist cave temples and ancient cities.",
+                south: "The Southern Route passed through the Tibetan Plateau and the Himalayas, connecting China with South Asia. This route was known for its tea and salt trade, as well as the exchange of Buddhist culture."
+            };
+            return descriptions[routeName];
+        }
+
+        // Route images
+        function getRouteImage(routeName) {
+            const images = {
+                north: "img/north-route.jpg",
+                middle: "img/middle-route.jpg",
+                south: "img/south-route.jpg"
+            };
+            return images[routeName];
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
