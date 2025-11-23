@@ -15,6 +15,7 @@ A modern, responsive website template inspired by the DH7015 Coffee project.
 - `index.html` - Main page
 - `styles.css` - All styling
 - `script.js` - Interactive features
+- `ambassador.html` / `ambassador.css` - PicCopilot Ambassador landing page demo
 - Additional pages:
   - maps.html (Origin Maps)
   - trends.html (Market Trends)
@@ -25,6 +26,15 @@ A modern, responsive website template inspired by the DH7015 Coffee project.
 1. Clone this repository
 2. Open `index.html` in your web browser
 3. Customize the content and styling to fit your needs
+
+### Viewing the PicCopilot Ambassador page
+
+- Open `ambassador.html` directly in your browser for a quick preview, or
+- Start a simple local server from the project root and visit `http://localhost:8000/ambassador.html`:
+
+```bash
+python3 -m http.server 8000
+```
 
 ## Customization
 
